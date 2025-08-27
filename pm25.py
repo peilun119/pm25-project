@@ -26,8 +26,15 @@ conn, cursor = None, None
 def open_db():
     global conn, cursor
     try:
+        # conn = pymysql.connect(
+        # host="localhost", user="root", password="", port=3307, database="demo"
+        # )
         conn = pymysql.connect(
-            host="localhost", user="root", password="", port=3307, database="demo"
+            host="mysql-63cdab1-aa8954158-dd04.j.aivencloud.com",
+            user="avnadmin",
+            password="AVNS_Ukq6fXxTr3Q0YUnS8PX",
+            port=24112,
+            database="defaultdb",
         )
 
         # print(conn)
@@ -68,6 +75,35 @@ def write_to_sql():
         print(e)
 
 
+# 從雲端資料庫撈資料出來
+def get_data_from_mysql():
+    try:
+        open_db()
+        # 篩選最後更新時間
+        # sqlstr = "select max(datacreationdate) from pm25"
+        # cursor.execute(sqlstr)
+        # max_date = cursor.fetchone()
+        # print(max_date)
+
+        sqlstr = (
+            "select site,county,pm25,datacreationdate,itemunit "
+            "from pm25 "
+            "where datacreationdate=(select max(datacreationdate) from pm25);"
+        )
+        cursor.execute(sqlstr)
+        datas = cursor.fetchall()
+
+        return datas
+    except Exception as e:
+        print(e)
+    finally:
+        close_db()
+
+    return None
+
+
 # open_db()
 # write_to_sql()
 # close_db()
+
+print(get_data_from_mysql())
