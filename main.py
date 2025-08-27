@@ -29,7 +29,8 @@ app = Flask(__name__)  # 以此檔案當作程式起始點
 def get_pm25():
     values = get_open_data()
     print(values)
-    return render_template("pm25.html")
+    columns = ["站點名稱", "縣市", "PM2.5", "更新時間", "單位"]
+    return render_template("pm25.html", values=values, columns=columns)
 
 
 @app.route("/bmi/height=<h>&weight=<w>")

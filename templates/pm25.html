@@ -7,9 +7,30 @@
     <title>pm25</title>
 </head>
 
+
 <body>
     <h1>PM2.5數據列表</h1>
-    {{content}}
+    <table border="1">
+        <thead>
+            <tr>
+                {% for col in columns %}
+                <th>{{col}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in values %}
+            <tr>
+                {% for value in row %}
+                <td>{{value}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- {{columns}} -->
+    <!-- {{values}} -->
+
 </body>
 
 </html>
