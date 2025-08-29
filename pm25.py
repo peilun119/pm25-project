@@ -39,6 +39,9 @@ def open_db():
 
         # print(conn)
         cursor = conn.cursor()
+        # 沒資料表就建表
+        cursor.execute(tablestr)
+        conn.commit()
         print("資料庫開啟成功!")
     except Exception as e:
         print(e)
@@ -67,12 +70,14 @@ def write_to_sql():
             print("目前無資料")
             return
 
-        cursor = conn.cursor()
         size = cursor.executemany(sqlstr, values)
         conn.commit()
         print(f"寫入{size}筆資料成功")
+        return size
     except Exception as e:
         print(e)
+
+    return 0
 
 
 # 從雲端資料庫撈資料出來
@@ -102,8 +107,21 @@ def get_data_from_mysql():
     return None
 
 
-# open_db()
-# write_to_sql()
-# close_db()
+def write_data_from_mysql():
+    try:
+        open_db()
+        size = write_to_sql()
 
-print(get_data_from_mysql())
+        return {"結果": "success", "寫入筆數": size}
+
+    except Exception as e:
+        print(e)
+
+        return {"結果": "failure", "message": str(e)}
+
+    finally:
+        close_db()
+
+
+if __name__ == "__main__":
+    write_data_from_mysql()

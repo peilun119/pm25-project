@@ -12,7 +12,7 @@
         text-align: center;
         font-family: Arial, sans-serif;
         margin: 20px;
-        background-color: rgb(214, 255, 236);
+        background-color: rgb(190, 227, 241);
     }
 
     h1 {
@@ -69,11 +69,11 @@
     }
 
     td {
-        background-color: rgb(255, 255, 255);
+        background-color: rgb(214, 255, 236);
     }
 
     thead {
-        background-color: #f2f2f2;
+        background-color: #52ebca;
     }
 
     #result {
@@ -87,7 +87,7 @@
 
     #tableContainer {
         /* 增加scoll bar */
-        max-height: 600px;
+        max-height: 700px;
         overflow-y: auto;
 
         border: 1px solid black;
@@ -108,10 +108,11 @@
     }
 </style>
 
-<div id="tableContainer">
 
-    <body>
-        <h1>PM2.5數據列表</h1>
+<body>
+    <h1>PM2.5數據列表</h1>
+    <p><a href="/update-db">更新資料</a></p>
+    <div id="tableContainer">
         <table border="1">
             <thead>
                 <tr>
@@ -133,7 +134,7 @@
         <!-- {{columns}} -->
         <!-- {{values}} -->
 
-    </body>
-</div>
+    </div>
+</body>
 
 </html>

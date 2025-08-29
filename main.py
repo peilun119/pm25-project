@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from datetime import datetime
-from pm25 import get_data_from_mysql
+from pm25 import get_data_from_mysql, write_data_from_mysql
+import json
 
 # from pm25 import get_open_data
 
@@ -24,6 +25,13 @@ books = {
 
 
 app = Flask(__name__)  # 以此檔案當作程式起始點
+
+
+@app.route("/update-db")
+def update_db():
+    result = write_data_from_mysql()
+
+    return json.dumps(result, ensure_ascii=False)
 
 
 @app.route("/pm25")
