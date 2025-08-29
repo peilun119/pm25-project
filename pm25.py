@@ -73,6 +73,7 @@ def write_to_sql():
         size = cursor.executemany(sqlstr, values)
         conn.commit()
         print(f"寫入{size}筆資料成功")
+
         return size
     except Exception as e:
         print(e)
@@ -107,7 +108,8 @@ def get_data_from_mysql():
     return None
 
 
-def write_data_from_mysql():
+# 整合更新資料庫
+def write_data_to_mysql():
     try:
         open_db()
         size = write_to_sql()
@@ -123,5 +125,25 @@ def write_data_from_mysql():
         close_db()
 
 
+# 取得各縣市站點的平均值函式
+def get_avg_pm25_from_mysql():
+    try:
+        open_db()
+        sqlstr = """
+        select county,round(avg(pm25),2) from pm25 group by county;
+        """
+        cursor.execute(sqlstr)
+        datas = cursor.fetchall()
+
+        return datas
+    except Exception as e:
+        print(e)
+    finally:
+        close_db()
+
+    return None
+
+
 if __name__ == "__main__":
-    write_data_from_mysql()
+    write_data_to_mysql()
+    print(get_avg_pm25_from_mysql())

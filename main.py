@@ -1,6 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 from datetime import datetime
-from pm25 import get_data_from_mysql, write_data_from_mysql
+from pm25 import get_data_from_mysql, write_data_to_mysql, get_avg_pm25_from_mysql
 import json
 
 # from pm25 import get_open_data
@@ -27,9 +27,21 @@ books = {
 app = Flask(__name__)  # 以此檔案當作程式起始點
 
 
+@app.route("/avg-pm25")
+def get_avg_pm25():
+    result = get_avg_pm25_from_mysql()
+    county = [r[0] for r in result]  # 第一個欄位是城市
+    pm25 = [float(r[1]) for r in result]  # 第二個欄位是pm25 轉浮點數
+
+    return Response(
+        json.dumps({"county": county, "pm25": pm25}, ensure_ascii=False),
+        mimetype="application/json",
+    )  # Response 封裝, mimetype="application/json" 是封裝成json 格式
+
+
 @app.route("/update-db")
 def update_db():
-    result = write_data_from_mysql()
+    result = write_data_to_mysql()
 
     return json.dumps(result, ensure_ascii=False)
 

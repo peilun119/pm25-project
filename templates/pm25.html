@@ -5,113 +5,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>pm25</title>
-</head>
 
-<style>
-    body {
-        text-align: center;
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        background-color: rgb(190, 227, 241);
-    }
-
-    h1 {
-        color: #333;
-    }
-
-    form {
-        text-align: left;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 8px;
-    }
-
-    input[type="number"] {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
-
-    .buttons {
-        text-align: center;
-    }
-
-    button {
-        width: 100px;
-        padding: 10px 15px;
-        background-color: #28a745;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-
-    button:hover {
-        background-color: #218838;
-    }
-
-    table {
-        border-collapse: collapse;
-        border: 1px solid;
-        margin: 0 auto;
-        width: 100%;
-    }
-
-    th,
-    td {
-        border: 1px solid;
-        padding: 8px;
-        text-align: center;
-    }
-
-    td {
-        background-color: rgb(214, 255, 236);
-    }
-
-    thead {
-        background-color: #52ebca;
-    }
-
-    #result {
-        background-color: rgb(165, 165, 235);
-        /* display: inline-block; */
-    }
-
-    #result h1 {
-        color: rgb(241, 226, 14);
-    }
-
-    #tableContainer {
-        /* 增加scoll bar */
-        max-height: 700px;
-        overflow-y: auto;
-
-        border: 1px solid black;
-        width: 80%;
-        margin: 0 auto;
-    }
-
-    @media screen and (max-width:1024px) {
-        #tableContainer {
-            width: 80%;
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: rgb(190, 227, 241);
         }
-    }
 
-    @media screen and (max-width:600px) {
-        #tableContainer {
+        h1 {
+            color: #333;
+        }
+
+        form {
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            text-align: center;
+        }
+
+        button {
+            width: 100px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        table {
+            border-collapse: collapse;
+            border: 1px solid;
+            margin: 0 auto;
             width: 100%;
         }
-    }
-</style>
+
+        th,
+        td {
+            border: 1px solid;
+            padding: 8px;
+            text-align: center;
+        }
+
+        td {
+            background-color: rgb(214, 255, 236);
+        }
+
+        thead {
+            background-color: #52ebca;
+        }
+
+        #result {
+            background-color: rgb(165, 165, 235);
+            /* display: inline-block; */
+        }
+
+        #result h1 {
+            color: rgb(241, 226, 14);
+        }
+
+        #tableContainer {
+            /* 增加scoll bar */
+            max-height: 700px;
+            overflow-y: auto;
+
+            border: 1px solid black;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        @media screen and (max-width:1024px) {
+            #tableContainer {
+                width: 80%;
+            }
+        }
+
+        @media screen and (max-width:600px) {
+            #tableContainer {
+                width: 100%;
+            }
+        }
+
+        #main {
+            margin: 0 auto;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+
 
 
 <body>
     <h1>PM2.5數據列表</h1>
     <p><a href="/update-db">更新資料</a></p>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+
     <div id="tableContainer">
         <table border="1">
             <thead>
@@ -135,6 +147,47 @@
         <!-- {{values}} -->
 
     </div>
+
+    <script type="text/javascript">
+
+        var myChart = echarts.init(document.getElementById('main'));
+
+        $.ajax(
+            {
+                url: "/avg-pm25",
+                type: "GET",
+                dataType: "json",
+                success: (result) => {
+                    console.log(result);
+                    var option = {
+                        title: {
+                            text: '縣市PM2.5平均值'
+                        },
+                        tooltip: {},
+                        legend: {
+                            data: ['PM2.5']
+                        },
+                        xAxis: {
+                            data: result["county"]
+                        },
+                        yAxis: {},
+                        series: [
+                            {
+                                name: 'PM2.5',
+                                type: 'bar',
+                                data: result["pm25"]
+                            }
+                        ]
+                    };
+
+                    myChart.setOption(option);
+                },
+            }
+        );
+
+
+    </script>
+
 </body>
 
 </html>
