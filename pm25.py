@@ -102,6 +102,7 @@ def get_data_from_mysql():
         # 取得不重複縣市名稱-20250903
         sqlstr = "select distinct county from pm25;"
         cursor.execute(sqlstr)
+        # 轉為一維的資料
         countys = [county[0] for county in cursor.fetchall()]
 
         return datas, countys
