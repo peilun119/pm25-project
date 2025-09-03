@@ -99,7 +99,12 @@ def get_data_from_mysql():
         cursor.execute(sqlstr)
         datas = cursor.fetchall()
 
-        return datas
+        # 取得不重複縣市名稱-20250903
+        sqlstr = "select distinct county from pm25;"
+        cursor.execute(sqlstr)
+        countys = [county[0] for county in cursor.fetchall()]
+
+        return datas, countys
     except Exception as e:
         print(e)
     finally:
@@ -171,4 +176,5 @@ def get_pm25_by_conty(county):
 if __name__ == "__main__":
     # write_data_to_mysql()
     # print(get_avg_pm25_from_mysql())
-    print(get_pm25_by_conty("臺南市"))
+    # print(get_pm25_by_conty("臺南市"))
+    print(get_data_from_mysql())

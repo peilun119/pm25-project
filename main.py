@@ -86,10 +86,10 @@ def update_db():
 @app.route("/pm25")
 def get_pm25():
     # values = get_open_data()
-    values = get_data_from_mysql()
+    values, countys = get_data_from_mysql()  # 20250903 多加一個接收參數
     print(values)
     columns = ["站點名稱", "縣市", "PM2.5", "更新時間", "單位"]
-    return render_template("pm25.html", values=values, columns=columns)
+    return render_template("pm25.html", values=values, columns=columns, countys=countys)
 
 
 @app.route("/bmi/height=<h>&weight=<w>")

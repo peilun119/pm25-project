@@ -120,6 +120,7 @@
 
 
 <body>
+    <!-- {{countys}} 測試是否有出現縣市-->
     <h1>PM2.5數據列表</h1>
     <p><a href="/update-db">更新資料</a></p>
 
@@ -129,9 +130,12 @@
     <div style="margin: 12px">
         <label for="countySelect">選擇縣市:</label>
         <select name="countySelect" id="countySelect">
-            <option value="新北市">新北市</option>
+            {% for cty in countys %}
+            <option value="{{cty}}">{{cty}}</option>
+            <!-- <option value="新北市">臺北市</option>
             <option value="臺北市">臺北市</option>
-            <option value="桃園市">桃園市</option>
+            <option value="桃園市">桃園市</option> -->
+            {% endfor %}
         </select>
 
         <button id="loadCounty" onclick="drawCountyChat()">確定</button>
