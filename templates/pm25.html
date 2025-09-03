@@ -177,14 +177,20 @@
         }
 
         // 畫圖函式化
-        function drawChat(char, url, title, xKey, yKey, color) {
+        function drawChat(chart, url, title, xKey, yKey, color) {
+
+            chart.showLoading();
 
             $.ajax(
                 {
                     url: url,
                     type: "GET",
                     dataType: "json",
+                    error: () => {
+                        alert("讀取資料錯誤,請稍後在試!")
+                    },
                     success: (result) => {
+                        chart.hideLoading();
                         console.log(result);
                         var option = {
                             title: {
@@ -210,7 +216,7 @@
                             ]
                         };
 
-                        char.setOption(option);
+                        chart.setOption(option);
                     },
                 }
             );
