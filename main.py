@@ -1,6 +1,11 @@
 from flask import Flask, render_template, Response
 from datetime import datetime
-from pm25 import get_data_from_mysql, write_data_to_mysql, get_avg_pm25_from_mysql
+from pm25 import (
+    get_data_from_mysql,
+    write_data_to_mysql,
+    get_avg_pm25_from_mysql,
+    get_pm25_by_conty,
+)
 import json
 
 # from pm25 import get_open_data
@@ -25,6 +30,38 @@ books = {
 
 
 app = Flask(__name__)  # 以此檔案當作程式起始點
+
+
+@app.route("/county-pm25/<county>")
+def get_county_pm25(county):
+    result = get_pm25_by_conty(county)
+
+    if len(result) == 0:
+        return Response(
+            json.dumps(
+                {"result": "取得資料失敗", "message": f"無此[{county}]縣市"},
+                ensure_ascii=False,
+            )
+        )
+
+    site = [r[0] for r in result]  # 第一個欄位是城市
+    pm25 = [float(r[1]) for r in result]  # 第二個欄位是pm25 轉浮點數
+    datetime = result[0][2].strftime("%Y-%m-%d %H:%M:%S")  # 將時間轉為字串
+    # print(datetime)
+
+    return Response(
+        json.dumps(
+            {
+                "county": county,
+                "count": len(site),
+                "site": site,
+                "pm25": pm25,
+                "datetime": datetime,
+            },
+            ensure_ascii=False,
+        ),
+        mimetype="application/json",
+    )  # Response 封裝, mimetype="application/json" 是封裝成json 格式
 
 
 @app.route("/avg-pm25")
