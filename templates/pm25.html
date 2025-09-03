@@ -106,7 +106,8 @@
             }
         }
 
-        #main {
+        #main,
+        #county {
             margin: 0 auto;
         }
     </style>
@@ -123,7 +124,18 @@
     <p><a href="/update-db">更新資料</a></p>
 
     <div id="main" style="width: 800px;height:600px;"></div>
+    <div id="county" style="width: 800px;height:600px;" hidden></div>
 
+    <div style="margin: 12px">
+        <label for="countySelect">選擇縣市:</label>
+        <select name="countySelect" id="countySelect">
+            <option value="新北市">新北市</option>
+            <option value="臺北市">臺北市</option>
+            <option value="桃園市">桃園市</option>
+        </select>
+
+        <button id="loadCounty" onclick="drawCountyChat()">確定</button>
+    </div>
     <div id="tableContainer">
         <table border="1">
             <thead>
@@ -150,41 +162,63 @@
 
     <script type="text/javascript">
 
-        var myChart = echarts.init(document.getElementById('main'));
+        const Chart1 = echarts.init(document.getElementById('main'));
+        const Chart2 = echarts.init(document.getElementById('county'));
+        // 取得畫圖框區塊的html元件
+        const countyEl = document.getElementById('county')
+        const countySelectEl = document.querySelector("#countySelect");
 
-        $.ajax(
-            {
-                url: "/avg-pm25",
-                type: "GET",
-                dataType: "json",
-                success: (result) => {
-                    console.log(result);
-                    var option = {
-                        title: {
-                            text: '縣市PM2.5平均值'
-                        },
-                        tooltip: {},
-                        legend: {
-                            data: ['PM2.5']
-                        },
-                        xAxis: {
-                            data: result["county"]
-                        },
-                        yAxis: {},
-                        series: [
-                            {
-                                name: 'PM2.5',
-                                type: 'bar',
-                                data: result["pm25"]
-                            }
-                        ]
-                    };
+        // console.log(countySelectEl);
 
-                    myChart.setOption(option);
-                },
-            }
-        );
+        drawChat(Chart1, "/avg-pm25", "各縣市PM2.5平均值", "county", "pm25", 'rgb(212, 162, 171)')
 
+        // 按了button取得縣市後才畫圖
+        function drawCountyChat() {
+            let county = countySelectEl.value
+            // console.log(county)
+            countyEl.hidden = false;
+            drawChat(Chart2, `/county-pm25/${county}`, `${county}PM2.5數據圖`, "site", "pm25", 'rgb(179, 133, 223)')
+        }
+
+        // 畫圖函式化
+        function drawChat(char, url, title, xKey, yKey, color) {
+
+            $.ajax(
+                {
+                    url: url,
+                    type: "GET",
+                    dataType: "json",
+                    success: (result) => {
+                        console.log(result);
+                        var option = {
+                            title: {
+                                text: title
+                            },
+                            tooltip: {},
+                            legend: {
+                                data: ['PM2.5']
+                            },
+                            xAxis: {
+                                data: result[xKey]
+                            },
+                            yAxis: {},
+                            series: [
+                                {
+                                    itemStyle: {
+                                        color: color
+                                    },
+                                    name: 'PM2.5',
+                                    type: 'bar',
+                                    data: result[yKey]
+                                }
+                            ]
+                        };
+
+                        char.setOption(option);
+                    },
+                }
+            );
+        }
 
     </script>
 
