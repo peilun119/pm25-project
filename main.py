@@ -42,7 +42,7 @@ def get_avg_pm25():
 @app.route("/update-db")
 def update_db():
     result = write_data_to_mysql()
-
+    # 用json.dumps()顯示中文字,ensure_ascii=False 是不要用ascii 編碼
     return json.dumps(result, ensure_ascii=False)
 
 
