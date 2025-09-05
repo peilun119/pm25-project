@@ -117,7 +117,7 @@
     <p><a href="/update-db">更新資料</a></p>
 
     <div id="main" style="width: 800px;height:600px;"></div>
-    <div id="county" style="width: 800px;height:600px;" hidden></div>
+    <div id="county" style="width: 800px;height:600px;" hidden></div> <!-- hidden => 隱藏county的畫圖區塊 -->
 
     <div style="margin: 12px">
         <label for="countySelect">選擇縣市:</label>
@@ -166,20 +166,20 @@
 
         // console.log(countySelectEl);
 
-        drawChat(Chart1, "/avg-pm25", "各縣市PM2.5平均值", "county", "pm25", 'rgb(212, 162, 171)')
+        drawChat(Chart1, "/avg-pm25", "各縣市PM2.5平均值", "county", "pm25", 'pink')
 
         // 按了button取得縣市後才畫圖
         function drawCountyChat() {
             let county = countySelectEl.value
             // console.log(county)
-            countyEl.hidden = false;
+            countyEl.hidden = false;   // 顯示county的畫圖區塊
             drawChat(Chart2, `/county-pm25/${county}`, `${county}PM2.5數據圖`, "site", "pm25", 'rgb(179, 133, 223)')
         }
 
         // 畫圖函式化
         function drawChat(chart, url, title, xKey, yKey, color) {
 
-            chart.showLoading();
+            chart.showLoading();  // 顯示畫圖時的loading畫面
 
             $.ajax(
                 {

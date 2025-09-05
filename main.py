@@ -83,6 +83,7 @@ def update_db():
     return json.dumps(result, ensure_ascii=False)
 
 
+@app.route("/")
 @app.route("/pm25")
 def get_pm25():
     # values = get_open_data()
@@ -125,11 +126,13 @@ def now_time():
 # route 綁定 網址跟方法
 # '/' 是首頁的意思
 # 最後一定要將資料return出去才會顯示在網頁上
-@app.route("/")
+# @app.route("/")
 def index():
     # return "<h1>這是首頁!</h1>"
     timenow = now_time()
     return render_template("index.html", time=timenow)  # 回傳網頁模板及參數 到前端網頁
 
 
-app.run(debug=True)  # 程式的尾端
+if __name__ == "__main__":
+    # app.run(debug=True)  # 程式的尾端
+    app.run(debug=False)

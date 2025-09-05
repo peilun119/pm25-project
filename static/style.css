@@ -2,8 +2,9 @@ body {
     text-align: center;
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 20px;
-    background-color: #f9fafc;
+    /* background-color: #f9fafc; */
     /* 淡灰白底 */
+    background-color: rgb(190, 227, 241);
     color: #333;
 }
 
@@ -28,7 +29,7 @@ a:hover {
     margin: 0 auto 30px auto;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background: #fff;
+    background: #f9fafc;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
@@ -80,10 +81,6 @@ table {
     width: 100%;
 }
 
-thead {
-    background-color: #f1f1f1;
-}
-
 th,
 td {
     padding: 10px;
@@ -93,6 +90,14 @@ td {
 
 tr:hover td {
     background-color: #fafafa;
+}
+
+th {
+    background-color: #52ebca;
+}
+
+td {
+    background-color: rgb(214, 255, 236);
 }
 
 @media screen and (max-width: 1024px) {
@@ -105,14 +110,4 @@ tr:hover td {
     #tableContainer {
         width: 100%;
     }
-}
-
-#main,
-#county {
-    width: 90%;
-    /* 改成百分比 */
-    height: 400px;
-    margin: 20px auto;
-    max-width: 700px;
-    /* 桌機上不會太大 */
 }
