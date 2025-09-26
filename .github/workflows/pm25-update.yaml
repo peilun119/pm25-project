@@ -1,0 +1,13 @@
+name: Update PM2.5 DB
+
+on:
+  schedule:
+    - cron: '30 15 * * *'  # 每天 23:30 (台灣時間)  分 時 日 月 星期, 是UTC時間 15+8=23
+  workflow_dispatch:       # 可手動執行
+
+jobs:
+  curl-update-db:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /update-db endpoint
+        run: curl -s https://pm25-project-m48g.onrender.com/update-db    # Rander 的網址後面加/update-db 
